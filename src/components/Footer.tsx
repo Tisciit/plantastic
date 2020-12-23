@@ -1,46 +1,19 @@
 import React from "react";
-import {
-  Flex,
-  Box,
-  Spacer,
-  Divider,
-  Button,
-  ButtonGroup,
-} from "@chakra-ui/react";
-import { AddPlant } from "./Plant";
-import { Plant } from "../api/types";
+import { Flex, Box, Spacer, ButtonGroup } from "@chakra-ui/react";
 
-export const Footer = (props: {
-  selection: Plant[];
-  fWater: Function;
-  fRemove: Function;
-}) => {
-  const { selection, fWater, fRemove } = props;
-
+export const Footer = (props: any) => {
+  const { children, ...rest } = props;
   return (
-    <Box backgroundColor="tomato" w="full" position="fixed" bottom="0">
-      <Divider />
+    <Box
+      backgroundColor="tomato"
+      w="full"
+      position="fixed"
+      bottom="0"
+      {...rest}
+    >
       <Flex py={1}>
         <Spacer />
-        <ButtonGroup>
-          <Button
-            disabled={selection.length === 0}
-            onClick={() => {
-              fWater();
-            }}
-          >
-            Watered!
-          </Button>
-          <Button
-            disabled={selection.length === 0}
-            onClick={() => {
-              fRemove();
-            }}
-          >
-            Remove
-          </Button>
-          <AddPlant />
-        </ButtonGroup>
+        <ButtonGroup>{children ? children : <></>}</ButtonGroup>
         <Spacer />
       </Flex>
     </Box>

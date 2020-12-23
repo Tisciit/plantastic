@@ -1,8 +1,8 @@
 import * as React from "react";
-import { Header, PlantList, Footer } from "./components";
+import { Header, PlantList, Footer, AddPlant } from "./components";
 import { getDateDifDays, dateAddDays } from "./utils";
 import { useData } from "./hooks/useData";
-import { Box } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { Plant } from "./api/types";
 import { updatePlant, deletePlant } from "./api/database";
 
@@ -43,7 +43,25 @@ export const App = () => {
         selection={selection}
         onItemClick={onItemClick}
       />
-      <Footer selection={selection} fWater={waterItems} fRemove={removeItems} />
+      <Footer>
+        <Button
+          disabled={selection.length === 0}
+          onClick={() => {
+            waterItems();
+          }}
+        >
+          Watered!
+        </Button>
+        <Button
+          disabled={selection.length === 0}
+          onClick={() => {
+            removeItems();
+          }}
+        >
+          Remove
+        </Button>
+        <AddPlant />
+      </Footer>
     </Box>
   );
 };
