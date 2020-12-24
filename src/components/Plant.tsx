@@ -23,11 +23,13 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   ButtonGroup,
+  Center,
 } from "@chakra-ui/react";
 import { BsDroplet } from "react-icons/bs";
 import { Plant } from "../api/types";
 import { addPlant } from "../api/database";
 import { getDateDifDays, dateAddDays } from "../utils";
+import { Camera } from "./Camera";
 
 export const PlantListItem = (props: {
   plant: Plant;
@@ -71,6 +73,15 @@ export const AddPlant = () => {
   const [name, setName] = React.useState("");
   const [cycle, setCycle] = React.useState(0);
   const [image, setImage] = React.useState("");
+  const [page, setPage] = React.useState(0);
+  const closeModal = () => {
+    setName("");
+    setCycle(0);
+    setImage("");
+    setPage(0);
+    onClose();
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const p: Plant = {
@@ -80,73 +91,106 @@ export const AddPlant = () => {
       image,
       cycleDays: cycle,
     };
-    console.log({ p });
     addPlant(p);
-
-    setName("");
-    setCycle(0);
-    setImage("");
-
-    onClose();
+    //Clear Controls
+    closeModal();
   };
+
+  const nextPage = () => {
+    if (page < 2) setPage(page + 1);
+  };
+  const previousPage = () => {
+    if (page > 0) setPage(page - 1);
+  };
+
   return (
     <>
       <Button onClick={onOpen}>Add Plant</Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={closeModal}>
         <ModalOverlay />
-        <ModalContent p={2} w="sm">
-          <ModalHeader>Add Plant</ModalHeader>
+        <ModalContent h="lg" p={2} w="sm">
+          <ModalHeader>Add Plant / Page {page}</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
+          <ModalBody position="relative">
             <form onSubmit={handleSubmit}>
-              <FormControl isRequired>
-                <FormLabel>Name</FormLabel>
-                <Input
-                  onChange={({ target }) => {
-                    setName(target.value);
-                  }}
-                />
-              </FormControl>
-              <FormControl isRequired>
-                <FormLabel>Image</FormLabel>
-                <Input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    if (!e.target.files) return;
-                    const file = e.target.files[0];
-                    if (file) {
-                      const x = new FileReader();
-                      x.onload = () => {
-                        if (!x.result) return;
-                        setImage(x.result.toString());
-                      };
-                      x.readAsDataURL(file);
-                    }
-                  }}
-                />
-                <Image boxSize="100px" src={image} />
-              </FormControl>
-              <FormControl isRequired>
-                <FormLabel>Water cycle?</FormLabel>
-                <NumberInput
-                  onChange={(str, num) => {
-                    setCycle(num);
-                  }}
-                >
-                  <NumberInputField />
-                  <NumberInputStepper>
-                    <NumberIncrementStepper />
-                    <NumberDecrementStepper />
-                  </NumberInputStepper>
-                </NumberInput>
-              </FormControl>
-              <ButtonGroup my={2}>
-                <Button type="submit">Submit</Button>
-                <Button onClick={onClose} type="button">
-                  Cancel
-                </Button>
-              </ButtonGroup>
+              <Box hidden={page !== 0}>
+                <FormControl isRequired>
+                  <FormLabel>Beatiful Image</FormLabel>
+                  <Camera />
+                </FormControl>
+              </Box>
+              <Box hidden={page !== 1}>
+                <FormControl isRequired>
+                  <FormLabel>Name</FormLabel>
+                  <Input
+                    onChange={({ target }) => {
+                      setName(target.value);
+                    }}
+                  />
+                </FormControl>
+                <FormControl isRequired>
+                  <FormLabel>Image</FormLabel>
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      if (!e.target.files) return;
+                      const file = e.target.files[0];
+                      if (file) {
+                        const x = new FileReader();
+                        x.onload = () => {
+                          if (!x.result) return;
+                          setImage(x.result.toString());
+                        };
+                        x.readAsDataURL(file);
+                      }
+                    }}
+                  />
+                  <Image boxSize="100px" src={image} />
+                </FormControl>
+                <FormControl isRequired>
+                  <FormLabel>Water cycle?</FormLabel>
+                  <NumberInput
+                    onChange={(str, num) => {
+                      setCycle(num);
+                    }}
+                  >
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                </FormControl>
+              </Box>
+              <Box hidden={page !== 2}>
+                <Center>
+                  <Button type="submit">Submit</Button>
+                </Center>
+              </Box>
+              <Center>
+                <ButtonGroup position="absolute" bottom="0" my={2}>
+                  <Button
+                    onClick={() => {
+                      previousPage();
+                    }}
+                    type="button"
+                  >
+                    Prev
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      nextPage();
+                    }}
+                    type="button"
+                  >
+                    Next
+                  </Button>
+                  <Button onClick={closeModal} type="button">
+                    Cancel
+                  </Button>
+                </ButtonGroup>
+              </Center>
             </form>
           </ModalBody>
         </ModalContent>
