@@ -27,7 +27,7 @@ import {
 import { BsDroplet } from "react-icons/bs";
 import { Plant } from "../api/types";
 import { addPlant } from "../api/database";
-import { getDateDifDays, dateAddDays } from "../utils";
+import { dateDiff, dateAddDays } from "../utils";
 
 export const PlantListItem = (props: {
   plant: Plant;
@@ -35,10 +35,10 @@ export const PlantListItem = (props: {
   onItemClick: Function;
 }) => {
   const { plant, selected, onItemClick } = props;
-  const nextWater = getDateDifDays(
+  const nextWater = dateDiff(
     dateAddDays(plant.lastWatered, plant.cycleDays),
     new Date()
-  );
+  ).days;
   return (
     <Box
       mb={3}
