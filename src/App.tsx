@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Header, PlantList, Footer, AddPlant } from "./components";
-import { getDateDifDays, dateAddDays } from "./utils";
+import { dateAddDays, dateDiff } from "./utils";
 import { useData } from "./hooks/useData";
 import { Box, Button } from "@chakra-ui/react";
 import { Plant } from "./api/types";
@@ -32,8 +32,8 @@ export const App = () => {
 
   data.sort(
     (a, b) =>
-      getDateDifDays(dateAddDays(a.lastWatered, a.cycleDays), new Date()) -
-      getDateDifDays(dateAddDays(b.lastWatered, b.cycleDays), new Date())
+      dateDiff(dateAddDays(a.lastWatered, a.cycleDays), new Date()).days -
+      dateDiff(dateAddDays(b.lastWatered, b.cycleDays), new Date()).days
   );
   return (
     <Box h="100vh">
