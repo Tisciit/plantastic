@@ -73,7 +73,6 @@ export const AddPlant = () => {
                     width={200}
                     height={200}
                     onSnap={(d) => {
-                      console.log(d);
                       setImage(d);
                       nextPage();
                     }}

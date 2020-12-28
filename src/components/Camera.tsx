@@ -18,7 +18,6 @@ export const Camera = (props: {
   if (stream && videoRef.current && !videoRef.current.srcObject) {
     videoRef.current.srcObject = stream;
   }
-  console.log(stream);
 
   const handleSnap = () => {
     if (stream) {
