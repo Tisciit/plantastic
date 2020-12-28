@@ -2,7 +2,6 @@ import React from "react";
 import {
   Box,
   Button,
-  ButtonGroup,
   Center,
   FormControl,
   FormLabel,
@@ -54,10 +53,7 @@ export const AddPlant = () => {
   };
 
   const nextPage = () => {
-    if (page < 2) setPage(page + 1);
-  };
-  const previousPage = () => {
-    if (page > 0) setPage(page - 1);
+    if (page < 1) setPage(page + 1);
   };
 
   return (
@@ -66,7 +62,7 @@ export const AddPlant = () => {
       <Modal isOpen={isOpen} onClose={closeModal}>
         <ModalOverlay />
         <ModalContent h="lg" p={2} w="sm">
-          <ModalHeader>Add Plant / Page {page}</ModalHeader>
+          <ModalHeader>Add Plant</ModalHeader>
           <ModalCloseButton />
           <ModalBody position="relative">
             <form onSubmit={handleSubmit}>
@@ -74,16 +70,20 @@ export const AddPlant = () => {
                 <FormControl isRequired>
                   <FormLabel>Beatiful Image</FormLabel>
                   <Camera
-                    width={100}
-                    height={100}
+                    width={200}
+                    height={200}
                     onSnap={(d) => {
                       console.log(d);
                       setImage(d);
+                      nextPage();
                     }}
                   />
                 </FormControl>
               </Box>
               <Box hidden={page !== 1}>
+                <Center>
+                  <Image src={image} />
+                </Center>
                 <FormControl isRequired>
                   <FormLabel>Name</FormLabel>
                   <Input
@@ -92,28 +92,9 @@ export const AddPlant = () => {
                     }}
                   />
                 </FormControl>
-                {/* <FormControl isRequired>
-                  <FormLabel>Image</FormLabel>
-                  <Input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => {
-                      if (!e.target.files) return;
-                      const file = e.target.files[0];
-                      if (file) {
-                        const x = new FileReader();
-                        x.onload = () => {
-                          if (!x.result) return;
-                          setImage(x.result.toString());
-                        };
-                        x.readAsDataURL(file);
-                      }
-                    }}
-                  /> */}
-                <Image src={image} />
-                {/* </FormControl> */}
+
                 <FormControl isRequired>
-                  <FormLabel>Water cycle?</FormLabel>
+                  <FormLabel>Water every days?</FormLabel>
                   <NumberInput
                     onChange={(str, num) => {
                       setCycle(num);
@@ -126,35 +107,10 @@ export const AddPlant = () => {
                     </NumberInputStepper>
                   </NumberInput>
                 </FormControl>
+                <Button my={2} type="submit">
+                  Submit
+                </Button>
               </Box>
-              <Box hidden={page !== 2}>
-                <Center>
-                  <Button type="submit">Submit</Button>
-                </Center>
-              </Box>
-              <Center>
-                <ButtonGroup position="absolute" bottom="0" my={2}>
-                  <Button
-                    onClick={() => {
-                      previousPage();
-                    }}
-                    type="button"
-                  >
-                    Prev
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      nextPage();
-                    }}
-                    type="button"
-                  >
-                    Next
-                  </Button>
-                  <Button onClick={closeModal} type="button">
-                    Cancel
-                  </Button>
-                </ButtonGroup>
-              </Center>
             </form>
           </ModalBody>
         </ModalContent>

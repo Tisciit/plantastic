@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { Box, Button, Center } from "@chakra-ui/react";
+import { BiCamera } from "react-icons/bi";
 import { useUserMedia } from "../hooks/useUserMedia";
 
 export const Camera = (props: {
@@ -22,6 +23,8 @@ export const Camera = (props: {
   const handleSnap = () => {
     if (stream) {
       const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
       const context = canvas.getContext("2d");
       videoRef.current && context && context.drawImage(videoRef.current, 0, 0);
       const d = canvas.toDataURL();
@@ -32,18 +35,21 @@ export const Camera = (props: {
   };
 
   return (
-    <Box>
-      <video
-        ref={videoRef}
-        autoPlay
-        playsInline
-        muted
-        onCanPlay={() => {
-          videoRef.current?.play();
-        }}
-      />
+    <Box p={2} border="1px">
+      <Center>
+        <video
+          ref={videoRef}
+          autoPlay
+          playsInline
+          muted
+          onCanPlay={() => {
+            videoRef.current?.play();
+          }}
+        />
+      </Center>
       <Center my={2}>
         <Button
+          rightIcon={<BiCamera />}
           onClick={() => {
             handleSnap();
           }}

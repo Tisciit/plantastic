@@ -30,7 +30,7 @@ export const PlantListItem = (props: {
       cursor="pointer"
       userSelect="none"
     >
-      <Image src={plant.image} alt={plant.name} />
+      <Image width={"full"} src={plant.image} alt={plant.name} />
       <Grid templateColumns="30% 70%">
         <GridItem textAlign="center" gridColumn="1/3">
           {plant.name}
