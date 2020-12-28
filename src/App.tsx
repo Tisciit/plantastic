@@ -38,6 +38,7 @@ export const App = () => {
   return (
     <Box h="100vh">
       <Header />
+
       <PlantList
         plants={data}
         selection={selection}

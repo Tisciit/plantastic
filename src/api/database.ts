@@ -62,7 +62,6 @@ export const loadPlants = (): Promise<Plant[]> => {
 //Execute all callbacks and remove them
 const onUpdate = () => {
   loadPlants().then((plants) => {
-    console.log({ plants });
     for (const c of callbacks) {
       c(plants);
       callbacks.splice(0, 1); //remove event callbak
@@ -82,11 +81,10 @@ export const addPlant = async (item: Plant) => {
 
     const r = store.add(item);
     r.onerror = () => {
-      console.log(`Error writing item ${item}`);
+      console.error(`Error writing item ${item}`);
       onUpdate();
     };
     r.onsuccess = () => {
-      console.log(`Success!`);
       onUpdate();
     };
   });
