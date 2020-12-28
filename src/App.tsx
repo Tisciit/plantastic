@@ -5,7 +5,6 @@ import { useData } from "./hooks/useData";
 import { Box, Button } from "@chakra-ui/react";
 import { Plant } from "./api/types";
 import { updatePlant, deletePlant } from "./api/database";
-import { Camera } from "./components/Camera";
 
 export const App = () => {
   const data = useData();
