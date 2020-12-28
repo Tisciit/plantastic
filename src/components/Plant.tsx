@@ -3,7 +3,10 @@ import * as React from "react";
 import { Box, Grid, GridItem, Icon, Image } from "@chakra-ui/react";
 import { BsDroplet } from "react-icons/bs";
 import { Plant } from "../api/types";
-import { getDateDifDays, dateAddDays } from "../utils";
+
+import { addPlant } from "../api/database";
+import { dateDiff, dateAddDays } from "../utils";
+
 
 export const PlantListItem = (props: {
   plant: Plant;
@@ -11,10 +14,10 @@ export const PlantListItem = (props: {
   onItemClick: Function;
 }) => {
   const { plant, selected, onItemClick } = props;
-  const nextWater = getDateDifDays(
+  const nextWater = dateDiff(
     dateAddDays(plant.lastWatered, plant.cycleDays),
     new Date()
-  );
+  ).days;
   return (
     <Box
       mb={3}
